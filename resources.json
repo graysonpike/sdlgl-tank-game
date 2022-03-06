@@ -1,0 +1,21 @@
+{
+	"sprites": {
+	},
+
+	"textures": {
+	},
+	
+	"fonts": {
+		"base_text": {
+			"filename": "Inconsolata/Inconsolata-Regular.ttf",
+			"size": 16
+		}
+	},
+
+	"sounds": {
+		"tank/engine_idle": "engine_idle.ogg",
+		"tank/tracks": "tracks.ogg",
+		"tank/engine_accelerate": "engine_accelerate.ogg",
+		"tank/engine_decelerate": "engine_decelerate.ogg"
+	}
+}
