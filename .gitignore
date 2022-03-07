@@ -5,3 +5,6 @@ build/*
 
 # macOS files
 .DS_Store
+
+# IDE
+.vscode
