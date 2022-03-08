@@ -6,6 +6,7 @@
 #include <sdlgl/input/inputs.h>
 #include <sdlgl/audio/audio.h>
 
+#include "entities/player.h"
 #include "entities/tank/tiger/tiger.h"
 
 
@@ -40,7 +41,10 @@ int main() {
     // Create and populate scene
     Scene *scene = new Scene(context.graphics, context.audio, context.inputs);
 
-    scene->add_entity(new Tiger(scene, 200, 200));
+    Tank *tank = new Tiger(scene, 200, 200);
+    Player *player = new Player(scene, tank);
+    scene->add_entity(player);
+    scene->add_entity(tank);
 
     while (*context.loop) {
 

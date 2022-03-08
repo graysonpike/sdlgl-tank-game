@@ -3,6 +3,36 @@
 	},
 
 	"textures": {
+        "sherman_hull": {
+			"filename": "tank/sherman/hull.png",
+			"offset_x": -31,
+			"offset_y": -60
+		},
+		"sherman_turret": {
+			"filename": "tank/sherman/turret.png",
+			"offset_x": -24,
+			"offset_y": -25
+		},
+		"sherman_barrel": {
+			"filename": "tank/sherman/barrel.png",
+			"offset_x": -4,
+			"offset_y": -26
+		},
+		"tiger_hull": {
+			"filename": "tank/tiger/hull.png",
+			"offset_x": -42,
+			"offset_y": -72
+		},
+		"tiger_turret": {
+			"filename": "tank/tiger/turret.png",
+			"offset_x": -30,
+			"offset_y": -40
+		},
+		"tiger_barrel": {
+			"filename": "tank/tiger/barrel.png",
+			"offset_x": -6,
+			"offset_y": -48
+		}
 	},
 	
 	"fonts": {
