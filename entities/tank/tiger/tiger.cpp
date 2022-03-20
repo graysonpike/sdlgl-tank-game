@@ -4,12 +4,15 @@
 
 Tiger::Tiger(Scene *scene, int x, int y) : Tank(scene, x, y) {
     barrel_offset_px = 60;
-    forward_engine_acceleration = 200.0f;
-    forward_engine_acceleration_cutoff_velocity = 50.0f;
-    backward_engine_acceleration = -100.0f;
-    backward_engine_acceleration_cutoff_velocity = 30.0f;
+    forward_engine_acceleration = 100.0f;
+    forward_max_velocity = 150.0f;
+    backward_engine_acceleration = 100.0f;
+    backward_max_velocity = 100.0f;
+    deceleration = 250.0f;
+    hull_rotation_speed = 0.01f;
     turret_max_rotate_speed = 0.3f;
     load_textures();
+    load_sounds();
 }
 
 void Tiger::load_textures() {
@@ -17,4 +20,14 @@ void Tiger::load_textures() {
     hull_texture = resources->get_texture("tiger_hull");
     turret_texture = resources->get_texture("tiger_turret");
     barrel_texture = resources->get_texture("tiger_barrel");
+}
+
+
+void Tiger::load_sounds() {
+    Resources *resources = scene->get_graphics()->get_resources();
+    Sound engine_idle = resources->get_sound("tank/engine_idle");
+    Sound engine_accelerate = resources->get_sound("tank/engine_accelerate");
+    Sound engine_tracks = resources->get_sound("tank/tracks");
+    engine_sound = EngineSound(scene, engine_idle, engine_tracks, engine_accelerate, 1.29f);
+    engine_sound.start_engine();
 }

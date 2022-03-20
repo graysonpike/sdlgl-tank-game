@@ -10,6 +10,7 @@
 class Tiger : public Tank {
 
     void load_textures();
+    void load_sounds();
 
 public:
 

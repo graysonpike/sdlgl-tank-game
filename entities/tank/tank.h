@@ -5,12 +5,14 @@
 
 #include <sdlgl/game/physical_entity.h>
 #include <sdlgl/graphics/texture.h>
+#include "engine_sound.h"
 
 class Tank : public PhysicalEntity {
 
 protected:
 
     virtual void load_textures() = 0;
+    virtual void load_sounds() = 0;
     std::pair<float, float> get_turret_center();
     std::pair<float, float> get_barrel_center();
 
@@ -18,9 +20,11 @@ protected:
     int turret_offset_px;
     int barrel_offset_px;
     float forward_engine_acceleration;
-    float forward_engine_acceleration_cutoff_velocity;
+    float forward_max_velocity;
     float backward_engine_acceleration;
-    float backward_engine_acceleration_cutoff_velocity;
+    float backward_max_velocity;
+    float deceleration;
+    float hull_rotation_speed;
     float turret_max_rotate_speed;
 
     // Input control variables
@@ -32,12 +36,13 @@ protected:
     float hull_angle;
     float turret_angle;
     float barrel_recoil_offset_px;
-    std::pair<float, float> acceleration;
-    std::pair<float, float> velocity;
+    float velocity;
 
     Texture hull_texture;
     Texture turret_texture;
     Texture barrel_texture;
+
+    EngineSound engine_sound;
 
 public:
 

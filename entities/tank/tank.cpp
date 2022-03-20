@@ -15,8 +15,9 @@ Tank::Tank(Scene *scene, int x, int y) :
     hull_angle(0),
     turret_angle(0),
     barrel_recoil_offset_px(0),
-    acceleration(std::pair<float, float>(0, 0)),
-    velocity(std::pair<float, float>(0, 0)) {}
+    velocity(0),
+    engine_sound(scene)
+    {}
 
 std::pair<float, float> Tank::get_turret_center() {
     std::pair<float, float> pos = Math::rotate_vector(turret_offset_px, hull_angle);
@@ -48,31 +49,53 @@ void Tank::update() {
 
     float delta = scene->get_delta();
 
-    // Turret Control
+    if (throttle != 0.0f || steering != 0.0f) {
+        engine_sound.accelerate();
+    }
+    else {
+        engine_sound.stop_accelerate();
+    }
+
     turret_angle += turret_control * turret_max_rotate_speed * delta;
     turret_control = 0.0f;
 
-    // Driving Control
-    float velocity_magnitude = Math::magnitude(velocity);
-    if (throttle > 0.0f && velocity_magnitude < forward_engine_acceleration_cutoff_velocity) {
-        std::pair<float, float> engine_acceleration = Math::rotate_vector(forward_engine_acceleration, hull_angle);
-        acceleration = Math::add_vectors(acceleration, engine_acceleration);
+    // Update velocity according to throttle
+    if (throttle > 0.0f) {
+        velocity += throttle * forward_engine_acceleration * delta;
     }
-    if (throttle < 0.0f && velocity_magnitude < backward_engine_acceleration_cutoff_velocity) {
-        std::pair<float, float> engine_acceleration = Math::rotate_vector(backward_engine_acceleration, hull_angle);
-        acceleration = Math::add_vectors(acceleration, engine_acceleration);
+    if (throttle < 0.0f) {
+        velocity += throttle * backward_engine_acceleration * delta;
+    }
+    if (steering == 0.0f) {
+        velocity = Math::clamp(velocity, -backward_max_velocity, forward_max_velocity);
+    }
+    else {
+        float speed_penalty_ratio = (1.0f - (0.2f * abs(steering)));
+        velocity = Math::clamp(velocity, -backward_max_velocity * speed_penalty_ratio, forward_max_velocity * speed_penalty_ratio);
+    }
+    if (throttle == 0.0f) {
+        if (velocity > 0.0f) {
+            velocity -= deceleration * delta;
+            velocity = std::max(velocity, 0.0f);
+        }
+        if (velocity < 0.0f) {
+            velocity += deceleration * delta;
+            velocity = std::min(velocity, 0.0f);
+        }
     }
     throttle = 0.0f;
 
-    // Acceleration and Velocity
-    // std::cout << acceleration.first;
-    std::pair<float, float> velocity_change = Math::scale_vector(acceleration, delta);
-    velocity = Math::add_vectors(velocity, velocity_change);
-    x += velocity.first * delta;
-    y += velocity.second * delta;
-    acceleration.first = 0.0f;
-    acceleration.second = 0.0f;
-    
+    // Update angle according to steering
+    float angle_change = steering * hull_rotation_speed;
+    hull_angle += angle_change;
+    turret_angle += angle_change;
+    steering = 0.0f;
+
+
+    // Move tank according to angle and velocity
+    std::pair<float, float> position_change = Math::rotate_vector(velocity, hull_angle);
+    x += position_change.first * delta;
+    y += position_change.second * delta;
 }
 
 void Tank::render() {
