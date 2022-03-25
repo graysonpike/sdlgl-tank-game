@@ -17,6 +17,9 @@ protected:
     std::pair<float, float> get_barrel_center();
     float get_velocity_ratio();
     float get_rotation_ratio();
+    void update_velocity();
+    void update_hull_rotational_velocity();
+    void update_engine_sound();
 
     // Constant properties
     int turret_offset_px;

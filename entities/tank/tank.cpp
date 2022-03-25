@@ -50,40 +50,8 @@ float Tank::get_rotation_ratio() {
     return std::abs(hull_rotational_velocity) / hull_max_rotational_velocity;
 }
 
-void Tank::set_throttle(float throttle) {
-    this->throttle = throttle;
-}
-
-void Tank::set_steering(float steering) {
-    this->steering = steering;
-}
-
-void Tank::set_turret_control(float turret_control) {
-    this->turret_control = turret_control;
-}
-
-void Tank::update() {
-
-    // Flip steering when reversing
-    if (throttle < 0.0f) {
-        steering = -steering;
-    }
-
+void Tank::update_velocity() {
     float delta = scene->get_delta();
-
-    if (throttle != 0.0f || steering != 0.0f) {
-        engine_sound.accelerate();
-    }
-    else {
-        engine_sound.stop_accelerate();
-    }
-
-    engine_sound.set_tracks_volume(std::min(0.5f + (get_velocity_ratio() / 2.0f + get_rotation_ratio() / 2.0f), 1.0f));
-
-    turret_angle += turret_control * turret_max_rotate_speed * delta;
-    turret_control = 0.0f;
-
-    // Update velocity according to throttle
     if (throttle > 0.0f) {
         velocity += throttle * forward_engine_acceleration * delta;
     }
@@ -109,8 +77,10 @@ void Tank::update() {
         }
     }
     throttle = 0.0f;
+}
 
-    // Update angle according to steering
+void Tank::update_hull_rotational_velocity() {
+    float delta = scene->get_delta();
     if (steering > 0.0f) {
         hull_rotational_velocity += steering * hull_rotational_acceleration * delta;
     }
@@ -130,6 +100,46 @@ void Tank::update() {
         }
     }
     steering = 0.0f;
+}
+
+void Tank::update_engine_sound() {
+    if (throttle != 0.0f || steering != 0.0f) {
+        engine_sound.accelerate();
+    }
+    else {
+        engine_sound.stop_accelerate();
+    }
+    engine_sound.set_tracks_volume(std::min(0.5f + (get_velocity_ratio() / 2.0f + get_rotation_ratio() / 2.0f), 1.0f));
+}
+
+void Tank::set_throttle(float throttle) {
+    this->throttle = throttle;
+}
+
+void Tank::set_steering(float steering) {
+    this->steering = steering;
+}
+
+void Tank::set_turret_control(float turret_control) {
+    this->turret_control = turret_control;
+}
+
+void Tank::update() {
+
+    // Flip steering when reversing
+    if (throttle < 0.0f) {
+        steering = -steering;
+    }
+
+    float delta = scene->get_delta();
+
+    update_engine_sound();
+
+    turret_angle += turret_control * turret_max_rotate_speed * delta;
+    turret_control = 0.0f;
+
+    update_velocity();
+    update_hull_rotational_velocity();
 
     // Move tank according to angle and velocity
     float hull_angle_change = hull_rotational_velocity * delta;

@@ -4,9 +4,9 @@
 
 Tiger::Tiger(Scene *scene, int x, int y) : Tank(scene, x, y) {
     barrel_offset_px = 60;
-    forward_engine_acceleration = 100.0f;
+    forward_engine_acceleration = 250.0f;
     forward_max_velocity = 150.0f;
-    backward_engine_acceleration = 100.0f;
+    backward_engine_acceleration = 200.0f;
     backward_max_velocity = 100.0f;
     deceleration = 250.0f;
     hull_rotational_acceleration = 1.0f;
