@@ -15,6 +15,8 @@ protected:
     virtual void load_sounds() = 0;
     std::pair<float, float> get_turret_center();
     std::pair<float, float> get_barrel_center();
+    float get_velocity_ratio();
+    float get_rotation_ratio();
 
     // Constant properties
     int turret_offset_px;
@@ -24,7 +26,9 @@ protected:
     float backward_engine_acceleration;
     float backward_max_velocity;
     float deceleration;
-    float hull_rotation_speed;
+    float hull_rotational_acceleration;
+    float hull_rotational_deceleration;
+    float hull_max_rotational_velocity;
     float turret_max_rotate_speed;
 
     // Input control variables
@@ -37,6 +41,7 @@ protected:
     float turret_angle;
     float barrel_recoil_offset_px;
     float velocity;
+    float hull_rotational_velocity;
 
     Texture hull_texture;
     Texture turret_texture;

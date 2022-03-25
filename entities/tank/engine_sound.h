@@ -16,26 +16,24 @@
 class EngineSound : public Entity {
 
     Sound idle_sound;
-    Sound full_sound;
+    Sound tracks_sound;
     Sound accelerate_sound;
-    Sound decelerate_sound;
     Channel *idle_channel;
-    Channel *full_channel;
+    Channel *tracks_channel;
     Channel *accelerate_channel;
-    bool running;
     bool accelerating;
     Timer accelerate_timer;
 
 public:
 
     EngineSound(Scene *scene);
-    EngineSound(Scene *scene, Sound idle_sound, Sound full_sound, Sound accelerate_sound, float accelerate_sound_duration);
+    EngineSound(Scene *scene, Sound idle_sound, Sound tracks_sound, Sound accelerate_sound, float accelerate_sound_duration);
     void update();
     void render();
     void start_engine();
-    void stop_engine();
     void accelerate();
     void stop_accelerate();
+    void set_tracks_volume(float volume);
 };
 
 #endif

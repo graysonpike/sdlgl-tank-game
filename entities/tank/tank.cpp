@@ -16,6 +16,7 @@ Tank::Tank(Scene *scene, int x, int y) :
     turret_angle(0),
     barrel_recoil_offset_px(0),
     velocity(0),
+    hull_rotational_velocity(0),
     engine_sound(scene)
     {}
 
@@ -31,6 +32,22 @@ std::pair<float, float> Tank::get_barrel_center() {
     pos.first += x;
     pos.second += y;
     return pos;
+}
+
+float Tank::get_velocity_ratio() {
+    if (velocity > 0) {
+        return velocity / forward_max_velocity;
+    }
+    else if (velocity < 0) {
+        return -velocity / backward_max_velocity;
+    }
+    else {
+        return 0.0f;
+    }
+}
+
+float Tank::get_rotation_ratio() {
+    return std::abs(hull_rotational_velocity) / hull_max_rotational_velocity;
 }
 
 void Tank::set_throttle(float throttle) {
@@ -56,6 +73,8 @@ void Tank::update() {
         engine_sound.stop_accelerate();
     }
 
+    engine_sound.set_tracks_volume(std::min(0.5f + (get_velocity_ratio() / 2.0f + get_rotation_ratio() / 2.0f), 1.0f));
+
     turret_angle += turret_control * turret_max_rotate_speed * delta;
     turret_control = 0.0f;
 
@@ -73,6 +92,7 @@ void Tank::update() {
         float speed_penalty_ratio = (1.0f - (0.2f * abs(steering)));
         velocity = Math::clamp(velocity, -backward_max_velocity * speed_penalty_ratio, forward_max_velocity * speed_penalty_ratio);
     }
+    // Apply deceleration when no throttle is applied
     if (throttle == 0.0f) {
         if (velocity > 0.0f) {
             velocity -= deceleration * delta;
@@ -86,13 +106,30 @@ void Tank::update() {
     throttle = 0.0f;
 
     // Update angle according to steering
-    float angle_change = steering * hull_rotation_speed;
-    hull_angle += angle_change;
-    turret_angle += angle_change;
+    if (steering > 0.0f) {
+        hull_rotational_velocity += steering * hull_rotational_acceleration * delta;
+    }
+    if (steering < 0.0f) {
+        hull_rotational_velocity += steering * hull_rotational_acceleration * delta;
+    }
+    hull_rotational_velocity = Math::clamp(hull_rotational_velocity, -hull_max_rotational_velocity, hull_max_rotational_velocity);
+    // Apply deceleration if no steering is applied
+    if (steering == 0.0f) {
+        if (hull_rotational_velocity > 0.0f) {
+            hull_rotational_velocity -= hull_rotational_deceleration * delta;
+            hull_rotational_velocity = std::max(hull_rotational_velocity, 0.0f);
+        }
+        if (hull_rotational_velocity < 0.0f) {
+            hull_rotational_velocity += hull_rotational_deceleration * delta;
+            hull_rotational_velocity = std::min(hull_rotational_velocity, 0.0f);
+        }
+    }
     steering = 0.0f;
 
-
     // Move tank according to angle and velocity
+    float hull_angle_change = hull_rotational_velocity * delta;
+    hull_angle += hull_angle_change;
+    turret_angle += hull_angle_change;
     std::pair<float, float> position_change = Math::rotate_vector(velocity, hull_angle);
     x += position_change.first * delta;
     y += position_change.second * delta;

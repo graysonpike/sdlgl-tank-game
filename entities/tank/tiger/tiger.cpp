@@ -9,7 +9,9 @@ Tiger::Tiger(Scene *scene, int x, int y) : Tank(scene, x, y) {
     backward_engine_acceleration = 100.0f;
     backward_max_velocity = 100.0f;
     deceleration = 250.0f;
-    hull_rotation_speed = 0.01f;
+    hull_rotational_acceleration = 1.0f;
+    hull_rotational_deceleration = 1.5f;
+    hull_max_rotational_velocity = 0.5f;
     turret_max_rotate_speed = 0.3f;
     load_textures();
     load_sounds();
