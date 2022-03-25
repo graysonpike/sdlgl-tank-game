@@ -64,6 +64,11 @@ void Tank::set_turret_control(float turret_control) {
 
 void Tank::update() {
 
+    // Flip steering when reversing
+    if (throttle < 0.0f) {
+        steering = -steering;
+    }
+
     float delta = scene->get_delta();
 
     if (throttle != 0.0f || steering != 0.0f) {
