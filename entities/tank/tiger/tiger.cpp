@@ -3,7 +3,9 @@
 
 
 Tiger::Tiger(Scene *scene, int x, int y) : Tank(scene, x, y) {
+    turret_offset_px = 0;
     barrel_offset_px = 60;
+    barrel_offset_recoil_px = -10;
     forward_engine_acceleration = 250.0f;
     forward_max_velocity = 150.0f;
     backward_engine_acceleration = 200.0f;
@@ -13,6 +15,9 @@ Tiger::Tiger(Scene *scene, int x, int y) : Tank(scene, x, y) {
     hull_rotational_deceleration = 1.5f;
     hull_max_rotational_velocity = 0.5f;
     turret_max_rotate_speed = 0.3f;
+    reload_duration = 3.0f;
+    barrel_recoil_reset_duration = 0.8f;
+    reload_timer = Timer(reload_duration);
     load_textures();
     load_sounds();
 }

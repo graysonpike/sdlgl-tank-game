@@ -7,17 +7,15 @@
 
 Tank::Tank(Scene *scene, int x, int y) :
     PhysicalEntity(scene, x, y, 0, 0),
-    turret_offset_px(0),
-    barrel_offset_px(0),
     throttle(0),
     steering(0),
     turret_control(0),
     hull_angle(0),
     turret_angle(0),
-    barrel_recoil_offset_px(0),
     velocity(0),
     hull_rotational_velocity(0),
-    engine_sound(scene)
+    engine_sound(scene),
+    barrel_offset_recoil_dynamic_px(0)
     {}
 
 std::pair<float, float> Tank::get_turret_center() {
@@ -28,7 +26,7 @@ std::pair<float, float> Tank::get_turret_center() {
 }
 
 std::pair<float, float> Tank::get_barrel_center() {
-    std::pair<float, float> pos = Math::rotate_vector(barrel_offset_px + barrel_recoil_offset_px, turret_angle);
+    std::pair<float, float> pos = Math::rotate_vector(barrel_offset_px + barrel_offset_recoil_dynamic_px, turret_angle);
     pos.first += x;
     pos.second += y;
     return pos;
@@ -124,7 +122,23 @@ void Tank::set_turret_control(float turret_control) {
     this->turret_control = turret_control;
 }
 
+void Tank::fire() {
+    if (reload_timer.is_active()) {
+        return;
+    }
+    reload_timer.reset();
+}
+
 void Tank::update() {
+
+    float reload_duration_elapsed = reload_timer.duration_elapsed();
+    if (reload_timer.is_active() && reload_duration_elapsed < barrel_recoil_reset_duration) {
+        float barrel_reset_ratio = reload_duration_elapsed / barrel_recoil_reset_duration;
+        barrel_offset_recoil_dynamic_px = barrel_offset_recoil_px * (1.0f - barrel_reset_ratio);
+    }
+    else {
+        barrel_offset_recoil_dynamic_px = 0;
+    }
 
     // Flip steering when reversing
     if (throttle < 0.0f) {

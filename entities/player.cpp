@@ -20,6 +20,11 @@ void Player::update() {
         tank->set_turret_control(turret_control);
     }
 
+    // Fire Control
+    if (inputs->is_key_down_event(SDL_SCANCODE_SPACE)) {
+        tank->fire();
+    }
+
     // Driving Control
     float throttle = 0.0f;
     if (inputs->is_key_down(SDL_SCANCODE_W)) {
