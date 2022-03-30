@@ -17,18 +17,21 @@ class EngineSound : public Entity {
 
     Sound idle_sound;
     Sound tracks_sound;
+    Sound turret_rotate_sound;
     Channel *idle_channel;
     Channel *tracks_channel;
+    Channel *turret_rotate_channel;
     float volume;
 
 public:
 
     explicit EngineSound(Scene *scene);
-    EngineSound(Scene *scene, Sound idle_sound, Sound tracks_sound, float volume = 1.0f);
+    EngineSound(Scene *scene, Sound idle_sound, Sound tracks_sound, Sound turret_rotate_sound, float volume = 1.0f);
     void update() override;
     void render() override;
     void start_engine();
     void set_tracks_intensity(float volume);
+    void set_turret_rotating(bool rotating);
 };
 
 #endif

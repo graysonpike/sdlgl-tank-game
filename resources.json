@@ -45,6 +45,7 @@
 	"sounds": {
 		"tank/engine_idle": "tank/engine_idle.ogg",
 		"tank/tracks": "tank/tracks.ogg",
-		"tank/cannon_fire": "tank/cannon_fire.ogg"
+		"tank/cannon_fire": "tank/cannon_fire.ogg",
+		"tank/turret_rotate": "tank/turret_rotate.ogg"
 	}
 }

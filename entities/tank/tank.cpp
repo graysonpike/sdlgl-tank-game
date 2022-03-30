@@ -102,6 +102,7 @@ void Tank::update_hull_rotational_velocity() {
 
 void Tank::update_engine_sound() {
     engine_sound.set_tracks_intensity(std::min(0.5f + (get_velocity_ratio() / 2.0f + get_rotation_ratio() / 2.0f), 1.0f));
+    engine_sound.set_turret_rotating(turret_control != 0.0f);
 }
 
 void Tank::set_throttle(float throttle) {
@@ -126,6 +127,7 @@ void Tank::fire() {
 
 void Tank::update() {
 
+    // Reloading and barrel recoil
     float reload_duration_elapsed = reload_timer.duration_elapsed();
     if (reload_timer.is_active() && reload_duration_elapsed < barrel_recoil_reset_duration) {
         float barrel_reset_ratio = reload_duration_elapsed / barrel_recoil_reset_duration;
