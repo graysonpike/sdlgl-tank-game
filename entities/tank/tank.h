@@ -11,8 +11,6 @@ class Tank : public PhysicalEntity {
 
 protected:
 
-    virtual void load_textures() = 0;
-    virtual void load_sounds() = 0;
     std::pair<float, float> get_turret_center();
     std::pair<float, float> get_barrel_center();
     float get_velocity_ratio();
