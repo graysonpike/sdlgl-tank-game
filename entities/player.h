@@ -12,8 +12,8 @@ class Player : public Entity {
 public:
 
 	Player(Scene *scene, Tank *tank);
-    void update();
-    void render();
+    void update() override;
+    void render() override;
     
 };
 

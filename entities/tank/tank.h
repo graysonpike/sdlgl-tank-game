@@ -59,13 +59,13 @@ protected:
 public:
 
 	Tank(Scene *scene, int x, int y);
-    virtual ~Tank()=default;
+    ~Tank() override =default;
 	void set_throttle(float throttle);
     void set_steering(float steering);
     void set_turret_control(float turret_control);
     void fire();
-    void update();
-    void render();
+    void update() override;
+    void render() override;
 
 };
 

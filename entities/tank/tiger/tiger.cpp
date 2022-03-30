@@ -22,6 +22,7 @@ Tiger::Tiger(Scene *scene, int x, int y) : Tank(scene, x, y) {
     load_sounds();
 }
 
+
 void Tiger::load_textures() {
     Resources *resources = scene->get_graphics()->get_resources();
     hull_texture = resources->get_texture("tiger_hull");

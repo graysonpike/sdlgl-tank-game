@@ -1,10 +1,8 @@
 #include "engine_sound.h"
-#include <stdio.h>
 #include <SDL2/SDL_mixer.h>
-#include <math.h>
 
 
-EngineSound::EngineSound(Scene *scene) : Entity(scene) {}
+EngineSound::EngineSound(Scene *scene) : Entity(scene), idle_channel(), tracks_channel() {}
 
 
 EngineSound::EngineSound(
