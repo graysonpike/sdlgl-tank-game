@@ -33,7 +33,6 @@ void Tiger::load_textures() {
 void Tiger::load_sounds() {
     Resources *resources = scene->get_graphics()->get_resources();
     Sound engine_idle = resources->get_sound("tank/engine_idle");
-    Sound engine_accelerate = resources->get_sound("tank/engine_accelerate");
     Sound engine_tracks = resources->get_sound("tank/tracks");
     engine_sound = EngineSound(scene, engine_idle, engine_tracks);
     engine_sound.start_engine();
