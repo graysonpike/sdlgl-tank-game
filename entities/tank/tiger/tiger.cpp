@@ -35,6 +35,7 @@ void Tiger::load_sounds() {
     Sound engine_idle = resources->get_sound("tank/engine_idle");
     Sound engine_accelerate = resources->get_sound("tank/engine_accelerate");
     Sound engine_tracks = resources->get_sound("tank/tracks");
-    engine_sound = EngineSound(scene, engine_idle, engine_tracks, engine_accelerate, 1.29f);
+    engine_sound = EngineSound(scene, engine_idle, engine_tracks);
     engine_sound.start_engine();
+    cannon_fire_sound = resources->get_sound("tank/cannon_fire");
 }

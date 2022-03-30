@@ -101,12 +101,6 @@ void Tank::update_hull_rotational_velocity() {
 }
 
 void Tank::update_engine_sound() {
-    if (throttle != 0.0f || steering != 0.0f) {
-        engine_sound.accelerate();
-    }
-    else {
-        engine_sound.stop_accelerate();
-    }
     engine_sound.set_tracks_volume(std::min(0.5f + (get_velocity_ratio() / 2.0f + get_rotation_ratio() / 2.0f), 1.0f));
 }
 
@@ -127,6 +121,7 @@ void Tank::fire() {
         return;
     }
     reload_timer.reset();
+    scene->get_audio()->play_sound(cannon_fire_sound);
 }
 
 void Tank::update() {

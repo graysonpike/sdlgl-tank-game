@@ -56,6 +56,7 @@ protected:
     Texture barrel_texture;
 
     EngineSound engine_sound;
+    Sound cannon_fire_sound;
 
 public:
 
