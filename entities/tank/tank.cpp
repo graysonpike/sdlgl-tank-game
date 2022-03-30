@@ -101,7 +101,7 @@ void Tank::update_hull_rotational_velocity() {
 }
 
 void Tank::update_engine_sound() {
-    engine_sound.set_tracks_volume(std::min(0.5f + (get_velocity_ratio() / 2.0f + get_rotation_ratio() / 2.0f), 1.0f));
+    engine_sound.set_tracks_intensity(std::min(0.5f + (get_velocity_ratio() / 2.0f + get_rotation_ratio() / 2.0f), 1.0f));
 }
 
 void Tank::set_throttle(float throttle) {
@@ -121,7 +121,7 @@ void Tank::fire() {
         return;
     }
     reload_timer.reset();
-    scene->get_audio()->play_sound(cannon_fire_sound);
+    scene->get_audio()->play_sound(cannon_fire_sound, false, 0.8f);
 }
 
 void Tank::update() {
